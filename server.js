@@ -52,6 +52,18 @@ router.get( '/js/contact_me.js', function ( req, res ) {
 	res.sendFile(path+'js/contact_me.js');
 });
 
+router.get( '/img/profile1.png', function ( req, res ) {
+	res.sendFile(path+'img/profile1.png');
+});
+
+router.get( '/vendor/jquery-easing/jquery.easing.min.js', function ( req, res ) {
+	res.sendFile(path+'vendor/jquery-easing/jquery.easing.min.js');
+});
+
+router.get( '/js/jqBootstrapValidation.js', function ( req, res ) {
+	res.sendFile(path+'js/jqBootstrapValidation.js');
+});
+
 app.use( '/', router );
 app.listen(7777,function(){
 	console.log("Running 7777");
