@@ -16,8 +16,16 @@ router.get( '/vendor/bootstrap/css/bootstrap.min.css', function ( req, res ) {
 	res.sendFile(path+'vendor/bootstrap/css/bootstrap.min.css');
 });
 
+router.get( '/vendor/bootstrap/css/bootstrap.css', function ( req, res ) {
+	res.sendFile(path+'vendor/bootstrap/css/bootstrap.css');
+});
+
 router.get( '/vendor/bootstrap/js/bootstrap.min.js', function ( req, res ) {
 	res.sendFile(path+'vendor/bootstrap/js/bootstrap.min.js');
+});
+
+router.get( '/vendor/bootstrap/js/bootstrap.js', function ( req, res ) {
+	res.sendFile(path+'vendor/bootstrap/js/bootstrap.js');
 });
 
 router.get( '/css/freelancer.min.css', function ( req, res ) {
@@ -34,6 +42,10 @@ router.get( '/js/freelancer.min.js.map', function ( req, res ) {
 
 router.get( '/vendor/popper/popper.min.js', function ( req, res ) {
 	res.sendFile(path+'vendor/popper/popper.min.js');
+});
+
+router.get( '/vendor/popper/popper.js', function ( req, res ) {
+	res.sendFile(path+'vendor/popper/popper.js');
 });
 
 router.get( '/vendor/jquery/jquery.min.js', function ( req, res ) {
@@ -62,6 +74,14 @@ router.get( '/vendor/jquery-easing/jquery.easing.min.js', function ( req, res ) 
 
 router.get( '/js/jqBootstrapValidation.js', function ( req, res ) {
 	res.sendFile(path+'js/jqBootstrapValidation.js');
+});
+
+router.get( '/img/hdfs_ui.png', function ( req, res ) {
+	res.sendFile(path+'img/hdfs_ui.png');
+});
+
+router.get( '/img/spark_ui.png', function ( req, res ) {
+	res.sendFile(path+'img/spark_ui.png');
 });
 
 app.use( '/', router );
