@@ -239,16 +239,63 @@
         </div>
         <div class="card-body">
           <label for="usr">The size of datasets ( GB ):</label>
-          <input type="text" class="form-control" id="s">
+          <input type="text" class="form-control" id="size">
           <label for="usr">The number of worker nodes:</label>
-          <input type="text" class="form-control" id="n">
+          <input type="text" class="form-control" id="node">
           <br></br>
-          <h5> Exection time : </h5>
-          <button type="button" class="btn btn-primary pull-right">Analyse</button>
+          <h5> Exection time ( seconds ): </h5>
+          <p id="exe"> . . . </p>
+          <button type="button" class="btn btn-primary pull-right" onclick="analyse()">Analyse</button>
         </div>
       </div>
     </div>
   </section>
+
+  <div class="modal fade" id="manual" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Manual Configuration</h4>
+        </div>
+        <div class="modal-body">
+          <p>The numbere of worker nodes : 2</p>
+          <button type="button" class="btn btn-danger btn-number">
+                <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-success btn-number pull-right">
+              <i class="fa fa-plus"></i>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <!--<div class="row">-->
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
+          <!--</div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="auto" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Auto Configuration</h4>
+        </div>
+        <div class="modal-body">
+          <p>Constraint :</p>
+          <!--<label for="usr">Maximum size of datasets:</label>
+          <input type="text" class="form-control" id="s">-->
+          <label for="usr">Maximum execution time ( seconds ):</label>
+          <input type="text" class="form-control" id="n">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="text-center">
@@ -721,6 +768,8 @@
 
         function refreshZ() {
           console.log("Refresh")
+          var toTime = Date.now()
+          var fromTime = toTime - 50000
           document.getElementById('mfa').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=1&fullscreen&from=" + fromTime + "&to=" + toTime;
           document.getElementById('mft').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=2&fullscreen&from=" + fromTime + "&to=" + toTime;
           document.getElementById('mua').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=3&fullscreen&from=" + fromTime + "&to=" + toTime;
@@ -728,4 +777,25 @@
 
         }
 
+        function analyse() {
+          var s = document.getElementById("size").value
+          var n = document.getElementById("node").value
+          var r = document.getElementById("exe")
+          if (s == parseFloat(s)){
+            if (n == parseFloat(n)){
+              var avgFree_Action = 289
+              var avgFree_Transformation = 562
+              // var ti =  44.071480 + (11.039356*s) + (-0.000797*avgFree_Action) + (-0.041471*avgFree_Transformation) + (-8.881572*n)
+              // ti = ti/60 
+              var ti =  17.81 + (171.90*s) + (-3.96*n)
+              console.log(ti)
+              r.innerHTML = ti
+            }
+            else{
+              alert("Invalid input")
+            }
+          }
+          else
+            alert("Invalid input")
+        }
 </script>
