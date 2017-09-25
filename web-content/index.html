@@ -225,7 +225,7 @@
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#auto">Auto - Configuration </button>
             </div>
             <div div class="col-md-6">
-              <h3 class="text-center">2 Worker nodes </h3>
+              <h3 class="text-center">1 Worker node </h3>
             </div>
             <div div class="col-md-3">
               <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#manual">Manual - Configuration </button>
@@ -258,23 +258,48 @@
           <h4 class="modal-title">Manual Configuration</h4>
         </div>
         <div class="modal-body">
-          <p>The numbere of worker nodes : 2</p>
-          <button type="button" class="btn btn-danger btn-number">
+          <p>The numbere of worker nodes : </p><p id="wn">1</p>
+          <button type="button" class="btn btn-danger btn-number" onclick="minus()">
                 <i class="fa fa-minus"></i>
           </button>
-          <button type="button" class="btn btn-success btn-number pull-right">
+          <button type="button" class="btn btn-success btn-number pull-right" onclick="plus()">
               <i class="fa fa-plus"></i>
           </button>
         </div>
         <div class="modal-footer">
           <!--<div class="row">-->
           <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
+          <button onclick="manual_confirm()" type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
           <!--</div>-->
         </div>
       </div>
     </div>
   </div>
+
+<script>
+  function minus(){
+    var wn = document.getElementById("wn")
+    if(parseInt(wn.innerHTML)==0){
+      alert("Minimum of worker node is 0")
+    }
+    else{
+      wn.innerHTML = parseInt(wn.innerHTML)-1
+    }
+  }
+  function plus(){
+    var wn = document.getElementById("wn")
+    if(parseInt(wn.innerHTML)==10){
+      alert("Maximum of worker node is 10")
+    }
+    else{
+      wn.innerHTML = parseInt(wn.innerHTML)+1
+    }
+  }
+  function manual_confirm(){
+    var wn = document.getElementById("wn")
+    console.log("[ OPEN STACK API (MANUAL) ]:"+wn.innerHTML)
+  }
+</script>
 
 <div class="modal fade" id="auto" role="dialog">
     <div class="modal-dialog">
@@ -286,16 +311,55 @@
           <p>Constraint :</p>
           <!--<label for="usr">Maximum size of datasets:</label>
           <input type="text" class="form-control" id="s">-->
-          <label for="usr">Maximum execution time ( seconds ):</label>
-          <input type="text" class="form-control" id="n">
+          <label for="usr">Maximum execution time ( minutes ):</label>
+          <input type="text" class="form-control" id="con">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
+          <button onclick="auto_confirm()"type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    function auto_confirm(){
+      var cons_time = document.getElementById("con")
+      if(cons_time.value==parseFloat(cons_time.value)){
+        var avg_memory_action = 3849 //mock up streaming
+        var avg_memory_transformation = 5345 //mock up streaming
+        var size  = -0.03031 + (-0.38603*avg_memory_action) + (0.56362*avg_memory_transformation)
+        size = size/1000
+        if(size<0) {
+          console.log("NO CHANGED")
+        }
+        else{
+          var instance = 2.01103 + (5.17337*size) + (-0.02862*cons_time.value)
+          instance = Math.ceil(instance)
+          var current_instance = 1 //open stack API
+          if(instance<0){
+            console.log("NO CHANGED")
+          }
+          else{
+            if(instance>current_instance){
+              console.log("SCALE OUT")
+              console.log("[ OPEN STACK API (AUTO) ]:"+current_instance+"-->"+instance)
+            }
+            else if(instance==current_instance){
+              console.log("NO CHANGED")
+            }
+            else if(instance<current_instance){
+              console.log("SCALE IN")
+              console.log("[ OPEN STACK API (AUTO) ]:"+current_instance+"-->"+instance)
+            }
+          }
+        }
+      }
+      else{
+        alert("Invalid input")
+      }
+    }
+  </script>
 
   <!-- Footer -->
   <footer class="text-center">
@@ -756,7 +820,7 @@
           document.getElementById('graph').src = url
         }
         window.setInterval(function () {
-          console.log("KK")
+          console.log("Fetching . . .")
           var toTime = Date.now()
           var fromTime = toTime - 50000
           document.getElementById('graph').src = url;
@@ -778,24 +842,32 @@
         }
 
         function analyse() {
-          var s = document.getElementById("size").value
-          var n = document.getElementById("node").value
+          var s = document.getElementById("size")
+          var n = document.getElementById("node")
           var r = document.getElementById("exe")
-          if (s == parseFloat(s)){
-            if (n == parseFloat(n)){
+          if (s.value == parseFloat(s.value)){
+            if (n.value == parseInt(n.value)){
               var avgFree_Action = 289
               var avgFree_Transformation = 562
               // var ti =  44.071480 + (11.039356*s) + (-0.000797*avgFree_Action) + (-0.041471*avgFree_Transformation) + (-8.881572*n)
               // ti = ti/60 
-              var ti =  17.81 + (171.90*s) + (-3.96*n)
+              var ti =  17.81 + (171.90*s.value) + (-3.96*n.value)
+              // var data = -0.41 + (-0.30*used_b) + (0.01*free_b) + (0.52*used_m) + (-0.001*free_m)
               console.log(ti)
               r.innerHTML = ti
             }
             else{
               alert("Invalid input")
+              s.value = ""
+              n.value = ""
+              r.innerHTML = ". . ."
             }
           }
-          else
+          else{
             alert("Invalid input")
+            s.value = ""
+            n.value = ""
+            r.innerHTML = ". . ."
+          }
         }
 </script>
