@@ -21,6 +21,21 @@
   <!-- Custom styles for this template -->
   <link href="css/freelancer.min.css" rel="stylesheet">
 
+ <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/popper/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Contact Form JavaScript -->
+  <script src="js/jqBootstrapValidation.js"></script>
+  <script src="js/contact_me.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/freelancer.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -222,7 +237,8 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-3 pull-left">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#auto">Auto - Configuration </button>
+              <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#auto">Auto - Configuration </button>
             </div>
             <div div class="col-md-6">
               <h3 class="text-center">1 Worker node </h3>
@@ -339,6 +355,32 @@
   </div>
 
   <script>
+        var m_action = 5000
+        var m_transformation = 5000
+        $(document).ready(function () {
+            $.ajax({
+              type: "GET",
+              url: "http://203.154.114.158:10050/memory_action",
+              dataType: "text",
+              success: function (data) {
+                console.log("MEMORY_ACTION")
+                m_action = data
+                console.log(m_action)
+              }
+            });
+          });
+           $(document).ready(function () {
+            $.ajax({
+              type: "GET",
+              url: "http://203.154.114.158:10050/memory_transformation",
+              dataType: "text",
+              success: function (data) {
+                console.log("MEMORY_TRANSFORMATION")
+                m_transformation = data
+                console.log(m_transformation)
+              }
+            });
+          });
         function auto_clear() {
           var click2 = document.getElementById("foot2")
           var click1 = document.getElementById("foot1")
@@ -387,52 +429,40 @@
             wnn.innerHTML = "The number of worker nodes : " + n + " nodes"
           }
         }
-        function read_memory_action(){
-          $(document).ready(function () {
-            $.ajax({
-              type: "GET",
-              url: "http://203.154.114.158:10050/memory_action",
-              dataType: "text",
-              success: function (data) {
-                console.log("MEMORY_ACTION")
-                console.log(data)
-                avg_memory_action = data.split("\n").split(",")[0]
-                console.log(avg_memory_action)
-                return avg_memory_action
-              }
-            });
-          });
-        }
         function auto_confirm0() {
           var cons_time = document.getElementById("con")
-          var avg_memory_action = read_memory_action() //mock up streaming
-          var avg_memory_transformation = 0 //mock up streaming
-          console.log("xxx"+avg_memory_action)
+          var avg_memory_action = parseFloat(m_action.toString().split("\n")[1].split(",")[0]) //mock up streaming
+          var avg_memory_transformation = parseFloat(m_transformation.toString().split("\n")[1].split(",")[0]) //mock up streaming
+          console.log("MEMORY_ACTION"+avg_memory_action)
+          console.log("MEMORY_TRANSFORMATION"+avg_memory_transformation)
           if (cons_time.value == parseFloat(cons_time.value)) {
             var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
             size = size / 1000
             if (size < 0) {
-              console.log("NO CHANGED")
+              size = 0
             }
-            else {
-              var instance = 2.01103 + (5.17337 * size) + (-0.02862 * cons_time.value)
-              instance = Math.ceil(instance)
-              var current_instance = 1 //open stack API
-              cons_time.disabled = true
-              var suggest = document.getElementById("suggest")
-              suggest.style.display = "block"
-              var wnn = document.getElementById("wnn")
-              wnn.innerHTML = "The number of worker nodes : " + instance + " nodes"
-              var click2 = document.getElementById("foot2")
-              var click1 = document.getElementById("foot1")
-              click2.style.display = "block"
-              click1.style.display = "none"
+            var instance = 2.01103 + (5.17337 * size) + (-0.02862 * cons_time.value)
+            if(instance<=0){
+              instance=0
             }
+            if(instance>=10){
+              instance=10
+            }
+            instance = Math.ceil(instance)
+            var current_instance = 1 //open stack API
+            cons_time.disabled = true
+            var suggest = document.getElementById("suggest")
+            suggest.style.display = "block"
+            var wnn = document.getElementById("wnn")
+            wnn.innerHTML = "The number of worker nodes : " + instance + " nodes"
+            var click2 = document.getElementById("foot2")
+            var click1 = document.getElementById("foot1")
+            click2.style.display = "block"
+            click1.style.display = "none"
           }
           else {
             alert("Invalid input")
           }
-
         }
         function auto_confirm() {
           var cons_time = document.getElementById("con")
@@ -811,29 +841,8 @@
     </div>
   </div>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/popper/popper.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-  <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Contact Form JavaScript -->
-  <script src="js/jqBootstrapValidation.js"></script>
-  <script src="js/contact_me.js"></script>
-
-  <!-- Custom scripts for this template -->
-  <script src="js/freelancer.min.js"></script>
-  <button type="button" class="btn btn-primary btn-block text-center" onclick="read_memory()">test</button>
+ 
 </body>
-<script>
-        function read_memory() {
-          console.log("TEST")
-          
-        }
-
-</script>
 
 </html>
 
