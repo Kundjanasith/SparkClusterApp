@@ -9,6 +9,8 @@ router.use( function ( req, res, next ) {
 });
 
 router.get( '/', function ( req, res ) {
+	res.header('Access-Control-Allow-Origin' , '*' );
+  	res.header('Access-Control-Allow-Credentials', true);
 	res.sendFile(path+'index.html');
 });
 
@@ -66,6 +68,10 @@ router.get( '/js/contact_me.js', function ( req, res ) {
 
 router.get( '/img/profile1.png', function ( req, res ) {
 	res.sendFile(path+'img/profile1.png');
+});
+
+router.get( '/img/profile2.png', function ( req, res ) {
+	res.sendFile(path+'img/profile2.png');
 });
 
 router.get( '/vendor/jquery-easing/jquery.easing.min.js', function ( req, res ) {

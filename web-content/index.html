@@ -355,11 +355,11 @@
           var wnn = document.getElementById("wnn")
           var arr = wnn.innerHTML.split(" ")
           var n = parseInt(arr[6])
-          if(n<=0){
-            n==0
+          if (n <= 0) {
+            n == 0
           }
-          if(n>=10){
-            n=10
+          if (n >= 10) {
+            n = 10
           }
           console.log("[ OPEN STACK API (AUTO) ]:" + n)
         }
@@ -387,11 +387,28 @@
             wnn.innerHTML = "The number of worker nodes : " + n + " nodes"
           }
         }
+        function read_memory_action(){
+          $(document).ready(function () {
+            $.ajax({
+              type: "GET",
+              url: "http://203.154.114.158:10050/memory_action",
+              dataType: "text",
+              success: function (data) {
+                console.log("MEMORY_ACTION")
+                console.log(data)
+                avg_memory_action = data.split("\n").split(",")[0]
+                console.log(avg_memory_action)
+                return avg_memory_action
+              }
+            });
+          });
+        }
         function auto_confirm0() {
           var cons_time = document.getElementById("con")
+          var avg_memory_action = read_memory_action() //mock up streaming
+          var avg_memory_transformation = 0 //mock up streaming
+          console.log("xxx"+avg_memory_action)
           if (cons_time.value == parseFloat(cons_time.value)) {
-            var avg_memory_action = 3849 //mock up streaming
-            var avg_memory_transformation = 5345 //mock up streaming
             var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
             size = size / 1000
             if (size < 0) {
@@ -419,9 +436,9 @@
         }
         function auto_confirm() {
           var cons_time = document.getElementById("con")
+          var avg_memory_action = 0 //mock up streaming
+          var avg_memory_transformation = 0 //mock up streaming
           if (cons_time.value == parseFloat(cons_time.value)) {
-            var avg_memory_action = 3849 //mock up streaming
-            var avg_memory_transformation = 5345 //mock up streaming
             var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
             size = size / 1000
             if (size < 0) {
@@ -808,162 +825,169 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/freelancer.min.js"></script>
-
+  <button type="button" class="btn btn-primary btn-block text-center" onclick="read_memory()">test</button>
 </body>
+<script>
+        function read_memory() {
+          console.log("TEST")
+          
+        }
+
+</script>
 
 </html>
 
 
 <script>
-        var title = document.getElementById("ti")
-        var state = "a"
-        var url = "http://203.154.114.158/ganglia/stacked.php?m=load_one&c=ssw2&r=hour"
-        document.getElementById("a").onclick = function () {
-          state = "a"
-          title.innerHTML = "One miniute load average"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=load_one&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("b").onclick = function () {
-          state = "b"
-          title.innerHTML = "Five miniutes load average"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=load_five&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("c").onclick = function () {
-          state = "c"
-          title.innerHTML = "Fifteen miniutes load average"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=load_fifteen&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("d").onclick = function () {
-          state = "d"
-          title.innerHTML = "Number of bytes in per second"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=bytes_in&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("e").onclick = function () {
-          state = "e"
-          title.innerHTML = "Number of bytes out per second"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=bytes_out&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("f").onclick = function () {
-          state = "f"
-          title.innerHTML = "Packets in per second "
-          url = "http://203.154.114.158/ganglia/stacked.php?m=pkts_in&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("g").onclick = function () {
-          state = "g"
-          title.innerHTML = "Packets out per second "
-          url = "http://203.154.114.158/ganglia/stacked.php?m=pkts_out&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("h").onclick = function () {
-          state = "h"
-          title.innerHTML = "Percent CPU system"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=cpu_system&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("i").onclick = function () {
-          state = "i"
-          title.innerHTML = "Percent CPU user"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=cpu_user&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("j").onclick = function () {
-          state = "j"
-          title.innerHTML = "Total free disk space"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=disk_free&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("k").onclick = function () {
-          state = "k"
-          title.innerHTML = "Total available disk space"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=disk_total&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("l").onclick = function () {
-          state = "l"
-          title.innerHTML = "Amount of buffered memory"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=mem_buffers&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("m").onclick = function () {
-          state = "m"
-          title.innerHTML = "Amount of cached memory"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=mem_cached&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("n").onclick = function () {
-          state = "n"
-          title.innerHTML = "Amount of available memory"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=mem_free&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("o").onclick = function () {
-          state = "o"
-          title.innerHTML = "Amount of shared memory"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=mem_shared&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        document.getElementById("p").onclick = function () {
-          state = "p"
-          title.innerHTML = "Total amount of memory"
-          url = "http://203.154.114.158/ganglia/stacked.php?m=mem_total&c=ssw2&r=hour"
-          document.getElementById('graph').src = url
-        }
-        window.setInterval(function () {
-          console.log("Fetching . . .")
-          var toTime = Date.now()
-          var fromTime = toTime - 50000
-          document.getElementById('graph').src = url;
-          //   document.getElementById('mfa').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=1&fullscreen&from=" + fromTime + "&to=" + toTime;
-          //   document.getElementById('mft').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=2&fullscreen&from=" + fromTime + "&to=" + toTime;
-          //   document.getElementById('mua').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=3&fullscreen&from=" + fromTime + "&to=" + toTime;
-          //   document.getElementById('mut').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=4&fullscreen&from=" + fromTime + "&to=" + toTime;
-        }, 10000);
+  var title = document.getElementById("ti")
+  var state = "a"
+  var url = "http://203.154.114.158/ganglia/stacked.php?m=load_one&c=ssw2&r=hour"
+  document.getElementById("a").onclick = function () {
+    state = "a"
+    title.innerHTML = "One miniute load average"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=load_one&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("b").onclick = function () {
+    state = "b"
+    title.innerHTML = "Five miniutes load average"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=load_five&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("c").onclick = function () {
+    state = "c"
+    title.innerHTML = "Fifteen miniutes load average"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=load_fifteen&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("d").onclick = function () {
+    state = "d"
+    title.innerHTML = "Number of bytes in per second"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=bytes_in&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("e").onclick = function () {
+    state = "e"
+    title.innerHTML = "Number of bytes out per second"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=bytes_out&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("f").onclick = function () {
+    state = "f"
+    title.innerHTML = "Packets in per second "
+    url = "http://203.154.114.158/ganglia/stacked.php?m=pkts_in&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("g").onclick = function () {
+    state = "g"
+    title.innerHTML = "Packets out per second "
+    url = "http://203.154.114.158/ganglia/stacked.php?m=pkts_out&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("h").onclick = function () {
+    state = "h"
+    title.innerHTML = "Percent CPU system"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=cpu_system&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("i").onclick = function () {
+    state = "i"
+    title.innerHTML = "Percent CPU user"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=cpu_user&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("j").onclick = function () {
+    state = "j"
+    title.innerHTML = "Total free disk space"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=disk_free&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("k").onclick = function () {
+    state = "k"
+    title.innerHTML = "Total available disk space"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=disk_total&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("l").onclick = function () {
+    state = "l"
+    title.innerHTML = "Amount of buffered memory"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=mem_buffers&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("m").onclick = function () {
+    state = "m"
+    title.innerHTML = "Amount of cached memory"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=mem_cached&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("n").onclick = function () {
+    state = "n"
+    title.innerHTML = "Amount of available memory"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=mem_free&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("o").onclick = function () {
+    state = "o"
+    title.innerHTML = "Amount of shared memory"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=mem_shared&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  document.getElementById("p").onclick = function () {
+    state = "p"
+    title.innerHTML = "Total amount of memory"
+    url = "http://203.154.114.158/ganglia/stacked.php?m=mem_total&c=ssw2&r=hour"
+    document.getElementById('graph').src = url
+  }
+  window.setInterval(function () {
+    console.log("Fetching . . .")
+    var toTime = Date.now()
+    var fromTime = toTime - 50000
+    document.getElementById('graph').src = url;
+    //   document.getElementById('mfa').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=1&fullscreen&from=" + fromTime + "&to=" + toTime;
+    //   document.getElementById('mft').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=2&fullscreen&from=" + fromTime + "&to=" + toTime;
+    //   document.getElementById('mua').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=3&fullscreen&from=" + fromTime + "&to=" + toTime;
+    //   document.getElementById('mut').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=4&fullscreen&from=" + fromTime + "&to=" + toTime;
+  }, 10000);
 
-        function refreshZ() {
-          console.log("Refresh")
-          var toTime = Date.now()
-          var fromTime = toTime - 50000
-          document.getElementById('mfa').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=1&fullscreen&from=" + fromTime + "&to=" + toTime;
-          document.getElementById('mft').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=2&fullscreen&from=" + fromTime + "&to=" + toTime;
-          document.getElementById('mua').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=3&fullscreen&from=" + fromTime + "&to=" + toTime;
-          document.getElementById('mut').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=4&fullscreen&from=" + fromTime + "&to=" + toTime;
+  function refreshZ() {
+    console.log("Refresh")
+    var toTime = Date.now()
+    var fromTime = toTime - 50000
+    document.getElementById('mfa').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=1&fullscreen&from=" + fromTime + "&to=" + toTime;
+    document.getElementById('mft').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=2&fullscreen&from=" + fromTime + "&to=" + toTime;
+    document.getElementById('mua').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=3&fullscreen&from=" + fromTime + "&to=" + toTime;
+    document.getElementById('mut').src = "http://203.185.71.2:3000/dashboard-solo/db/kitwai_kj?panelId=4&fullscreen&from=" + fromTime + "&to=" + toTime;
 
-        }
+  }
 
-        function analyse() {
-          var s = document.getElementById("size")
-          var n = document.getElementById("node")
-          var r = document.getElementById("exe")
-          if (s.value == parseFloat(s.value)) {
-            if (n.value == parseInt(n.value)) {
-              var avgFree_Action = 289
-              var avgFree_Transformation = 562
-              // var ti =  44.071480 + (11.039356*s) + (-0.000797*avgFree_Action) + (-0.041471*avgFree_Transformation) + (-8.881572*n)
-              // ti = ti/60 
-              var ti = 17.81 + (171.90 * s.value) + (-3.96 * n.value)
-              // var data = -0.41 + (-0.30*used_b) + (0.01*free_b) + (0.52*used_m) + (-0.001*free_m)
-              console.log(ti)
-              r.innerHTML = ti
-            }
-            else {
-              alert("Invalid input")
-              s.value = ""
-              n.value = ""
-              r.innerHTML = ". . ."
-            }
-          }
-          else {
-            alert("Invalid input")
-            s.value = ""
-            n.value = ""
-            r.innerHTML = ". . ."
-          }
-        }
+  function analyse() {
+    var s = document.getElementById("size")
+    var n = document.getElementById("node")
+    var r = document.getElementById("exe")
+    if (s.value == parseFloat(s.value)) {
+      if (n.value == parseInt(n.value)) {
+        var avgFree_Action = 289
+        var avgFree_Transformation = 562
+        // var ti =  44.071480 + (11.039356*s) + (-0.000797*avgFree_Action) + (-0.041471*avgFree_Transformation) + (-8.881572*n)
+        // ti = ti/60 
+        var ti = 17.81 + (171.90 * s.value) + (-3.96 * n.value)
+        // var data = -0.41 + (-0.30*used_b) + (0.01*free_b) + (0.52*used_m) + (-0.001*free_m)
+        console.log(ti)
+        r.innerHTML = ti
+      }
+      else {
+        alert("Invalid input")
+        s.value = ""
+        n.value = ""
+        r.innerHTML = ". . ."
+      }
+    }
+    else {
+      alert("Invalid input")
+      s.value = ""
+      n.value = ""
+      r.innerHTML = ". . ."
+    }
+  }
 
 </script>
