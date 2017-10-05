@@ -73,6 +73,8 @@
         <span class="name">KitWai Platform</span>
         <hr class="star-light">
         <span class="skills">Cloud Computing Platform for Large-scale Data Mining & Machine Learning</span>
+        <br></br>
+        <span id="ip_addr" class="skills">Spark cluster IP address : 203.154.114.158</span>
       </div>
     </div>
   </header>
@@ -232,7 +234,7 @@
       <hr class="star-primary">
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-tags"></i> Mode
+          <i class="fa fa-tags"></i> Mode 
         </div>
         <div class="card-body">
           <div class="row">
@@ -241,7 +243,8 @@
                 data-target="#auto">Auto - Scaling </button>
             </div>
             <div div class="col-md-6">
-              <h3 class="text-center">1 Worker node </h3>
+              <h2 id="scaling_name" class="text-center">manual - scaling</h2>
+              <h3 id="worker_node" class="text-center">1 Worker node </h3>
             </div>
             <div div class="col-md-3">
               <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#manual">Manual - Scaling </button>
@@ -328,6 +331,7 @@
         }
         function manual_confirm() {
           var wn = document.getElementById("wn")
+          document.getElementById("scaling_name").innerHTML = "manual - scaling"
           console.log("[ OPEN STACK API (MANUAL) ]:" + wn.innerHTML)
         }
   </script>
@@ -340,32 +344,24 @@
         </div>
         <div class="modal-body">
           <p>Constraint :</p>
-          <!--<label for="usr">Maximum size of datasets:</label>
-          <input type="text" class="form-control" id="s">-->
           <label for="usr">Maximum execution time ( minutes ):</label>
           <input type="text" class="form-control" id="con">
           <label for="usr">Maximum worker nodes ( nodes ):</label>
           <input type="text" class="form-control" id="nod">
           <br>
-          <div id="suggest" style="display: none;">
-            [Suggestion]
-            <p id="wnn">The number of worker nodes :</p>
-            <button type="button" class="btn btn-danger btn-number" onclick="Aminus()">
-                <i class="fa fa-minus"></i>
-              </button>
-            <button type="button" class="btn btn-success btn-number pull-right" onclick="Aplus()">
-                  <i class="fa fa-plus"></i>
-              </button>
-          </div>
         </div>
         <div id="foot1" class="modal-body">
           <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Cancel</button> &nbsp;&nbsp;&nbsp;&nbsp;
-          <button onclick="auto_confirm0()" type="button" class="btn btn-info">Confirm</button>
+          <button onclick="auto_confirm2()" type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
         </div>
-        <div id="foot2" class="modal-body" style="display: none;">
+        <!--<div id="foot1" class="modal-body">
+          <button type="button" class="btn btn-warning pull-left" data-dismiss="modal">Cancel</button> &nbsp;&nbsp;&nbsp;&nbsp;
+          <button onclick="auto_confirm0()" type="button" class="btn btn-info">Confirm</button>
+        </div>-->
+        <!--<div id="foot2" class="modal-body" style="display: none;">
           <button onclick="auto_clear()" type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button> &nbsp;&nbsp;&nbsp;&nbsp;
           <button onclick="auto_confirm1()" type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
-        </div>
+        </div>-->
       </div>
     </div>
   </div>
@@ -401,12 +397,44 @@
           var click2 = document.getElementById("foot2")
           var click1 = document.getElementById("foot1")
           var cons_time = document.getElementById("con")
+           var nod= document.getElementById("nod")
           click2.style.display = "none"
           click1.style.display = "block"
-          cons_time.disabled = false
-          cons_time.value = ""
+          
           var suggest = document.getElementById("suggest")
           suggest.style.display = "none"
+        }
+        function auto_confirm2(){
+          console.log("sss")
+          var avg_memory_action = parseFloat(m_action.toString().split("\n")[1].split(",")[0]) 
+          var avg_memory_transformation = parseFloat(m_transformation.toString().split("\n")[1].split(",")[0])
+          var cons_time = document.getElementById("con")
+          var nodes = document.getElementById("nod")
+          console.log(cons_time.value)
+          console.log(nodes.value)
+          if (cons_time.value == parseFloat(cons_time.value)) {
+            var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
+            size = size / 1000
+            if (size < 0) {
+              size = 0
+            }
+            var instance = 2.01103 + (5.17337 * size) + (-0.02862 * cons_time.value)
+            if(instance<=0){
+              instance=0
+            }
+            if(instance>=nodes.value){
+              instance=nodes.value
+            }
+            instance = Math.ceil(instance)
+            console.log("[ OPEN STACK API (AUTO) ]:" + instance)
+            cons_time.value = ""
+            nodes.value = ""
+          }
+          else {
+            alert("Invalid input")
+          }
+          cons_time.value = ""
+          nod.value = ""
         }
         function auto_confirm1() {
           auto_clear()
