@@ -412,7 +412,7 @@
           var nodes = document.getElementById("nod")
           console.log(cons_time.value)
           console.log(nodes.value)
-          if (cons_time.value == parseFloat(cons_time.value)) {
+          if (cons_time.value == parseFloat(cons_time.value)&&nodes.value == parseFloat(nodes.value)) {
             var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
             size = size / 1000
             if (size < 0) {
@@ -427,6 +427,7 @@
             }
             instance = Math.ceil(instance)
             console.log("[ OPEN STACK API (AUTO) ]:" + instance)
+            document.getElementById("scaling_name").innerHTML = "auto - scaling"
             cons_time.value = ""
             nodes.value = ""
           }
