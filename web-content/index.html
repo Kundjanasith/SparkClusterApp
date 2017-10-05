@@ -58,7 +58,7 @@
             <a class="nav-link js-scroll-trigger" href="#interface">Interface</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#configuration">Configuration</a>
+            <a class="nav-link js-scroll-trigger" href="#configuration">Scaling</a>
           </li>
         </ul>
       </div>
@@ -228,7 +228,7 @@
   <!-- Contact Section -->
   <section id="configuration">
     <div class="container">
-      <h2 class="text-center">Configuration</h2>
+      <h2 class="text-center">Scaling</h2>
       <hr class="star-primary">
       <div class="card mb-3">
         <div class="card-header">
@@ -238,18 +238,18 @@
           <div class="row">
             <div class="col-md-3 pull-left">
               <button type="button" class="btn btn-primary" data-toggle="modal"
-                data-target="#auto">Auto - Configuration </button>
+                data-target="#auto">Auto - Scaling </button>
             </div>
             <div div class="col-md-6">
               <h3 class="text-center">1 Worker node </h3>
             </div>
             <div div class="col-md-3">
-              <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#manual">Manual - Configuration </button>
+              <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#manual">Manual - Scaling </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="card mb-3">
+      <!--<div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-tag"></i> Execution time prediction
         </div>
@@ -264,18 +264,20 @@
           <button type="button" class="btn btn-primary pull-right" onclick="analyse()">Analyse</button>
         </div>
       </div>
-    </div>
+    </div>-->
   </section>
 
   <div class="modal fade" id="manual" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Manual Configuration</h4>
+          <h4 class="modal-title">Manual Scaling
+          </h4>
         </div>
         <div class="modal-body">
-          <p>The numbere of worker nodes : </p>
-          <p id="wn">1</p>
+          <button type="button" class="btn btn-block btn-primary" onclick="pop_suggest()">Request Suggestion</button>
+          <p id="wn" class="text-center">The number of worker nodes : 1</p>
+          <!--<p id="wn">1</p>-->
           <button type="button" class="btn btn-danger btn-number" onclick="minus()">
                 <i class="fa fa-minus"></i>
           </button>
@@ -294,23 +296,35 @@
   </div>
 
   <script>
+        function pop_suggest(){
+          var avg_memory_transformation = 0 //suggest
+          var avg_memory_action = 0 //suggest
+          var size = -0.03031 + (-0.38603 * avg_memory_action) + (0.56362 * avg_memory_transformation)
+          var instance = 2.01103 + (5.17337 * size) + (-0.02862 * 0)
+          instance = Math.floor(instance)
+          alert("The number of worker nodes : "+instance)
+        }
         function minus() {
           var wn = document.getElementById("wn")
-          if (parseInt(wn.innerHTML) == 0) {
+          var x = wn.innerHTML.split(" : ")[1]
+          if (parseInt(x) == 0) {
             alert("Minimum of worker node is 0")
           }
           else {
-            wn.innerHTML = parseInt(wn.innerHTML) - 1
+            var y = parseInt(x) - 1
+            wn.innerHTML = "The number of worker nodes : "+y
           }
         }
         function plus() {
           var wn = document.getElementById("wn")
-          if (parseInt(wn.innerHTML) == 10) {
-            alert("Maximum of worker node is 10")
-          }
-          else {
-            wn.innerHTML = parseInt(wn.innerHTML) + 1
-          }
+          var x = wn.innerHTML.split(" : ")[1]
+          // if (parseInt(x) == 10) {
+          //   alert("Maximum of worker node is 10")
+          // }
+          // else {
+            var y = parseInt(x) + 1
+            wn.innerHTML = "The number of worker nodes : "+y
+          // }
         }
         function manual_confirm() {
           var wn = document.getElementById("wn")
@@ -322,7 +336,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Auto Configuration</h4>
+          <h4 class="modal-title">Auto Scaling</h4>
         </div>
         <div class="modal-body">
           <p>Constraint :</p>
@@ -330,6 +344,8 @@
           <input type="text" class="form-control" id="s">-->
           <label for="usr">Maximum execution time ( minutes ):</label>
           <input type="text" class="form-control" id="con">
+          <label for="usr">Maximum worker nodes ( nodes ):</label>
+          <input type="text" class="form-control" id="nod">
           <br>
           <div id="suggest" style="display: none;">
             [Suggestion]
